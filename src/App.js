@@ -5,6 +5,7 @@ import WelcomePage from './pages/WelcomePage';
 import MapPage from './pages/MapPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
+import AllReportsPage from './pages/AllReportsPage';
 
 const App = () => {
   return (
@@ -15,6 +16,7 @@ const App = () => {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/map" element={<MapPage />} />
+          <Route path="/all-reports" element={<AllReportsPage />} />
         </Routes>
       </div>
     </Router>
