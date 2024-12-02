@@ -1,0 +1,45 @@
+.report-card {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.report-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  background-color: #f7f7f7;
+}
+
+.report-card img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 5px;
+}
+
+.report-card h3 {
+  margin: 10px 0;
+  font-size: 18px;
+}
+
+.report-card p {
+  font-size: 14px;
+  color: #555;
+}
+
+.report-card .report-title {
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.report-card .report-status {
+  color: green;
+  font-weight: bold;
+}
+
+.report-card .report-severity {
+  color: red;
+  font-weight: bold;
+}
