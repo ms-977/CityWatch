@@ -4,7 +4,6 @@ import StyledButton from '../components/StyledButton';
 import TextInputBox from '../components/TextInputBox';
 import { useNavigate } from 'react-router-dom';
 import logo from '../assets/CityWatch.png';
-import { Link } from 'react-router-dom';
 import './styles/LoginPage.css';
 
 const LoginPage = () => {
