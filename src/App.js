@@ -9,9 +9,14 @@ import AllReportsPage from './pages/AllReportsPage';
 import MyReportsPage from './pages/MyReportsPage';
 import CreateReportPage from './pages/CreateReportPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
+
+import CreateReportPage from './pages/CreateReportPage';
+
 import UpdatePasswordPage from './pages/UpdatePasswordPage';
 
+
 const App = () => {
+  
   return (
     <Router>
       <div className="App">
@@ -28,6 +33,7 @@ const App = () => {
         </Routes>
       </div>
     </Router>
+    
   );
 };
 
