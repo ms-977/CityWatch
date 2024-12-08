@@ -11,6 +11,8 @@ const Layout = ({ children }) => {
 
   const openCreateReportModal = () => setShowCreateReportModal(true);
   const closeCreateReportModal = () => setShowCreateReportModal(false);
+  const hideNavbarRoutes = ['/login', '/register', '/forgot-password'];
+  const shouldHideNavbar = hideNavbarRoutes.includes(location.pathname);
 
   // Define overflow behavior based on the route
   const getContentStyle = () => {
@@ -24,8 +26,9 @@ const Layout = ({ children }) => {
     <div className="app-layout" style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
       <Header  style={{ backgroundColor: '#6941C6', color: '#fff', padding: '1rem' }} />
       <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
-        <Navbar  openCreateReportModal={openCreateReportModal} /> {/* Pass modal handler to Navbar */}
-        <div style={getContentStyle()}>
+      {!shouldHideNavbar && (
+          <Navbar openCreateReportModal={openCreateReportModal} /> 
+        )}        <div style={getContentStyle()}>
           {children}
         </div>
       </div>
