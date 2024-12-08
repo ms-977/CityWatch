@@ -5,6 +5,7 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import AllReportsPage from './pages/AllReportsPage';
 import MyReportsPage from './pages/MyReportsPage';
+import TestAdminPage from './pages/TestAdminPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import MapPage from './pages/MapPage';
 import Layout from './components/layout'; 
@@ -25,6 +26,7 @@ const App = () => {
   return (
     <Router>
       <div className="App">
+
         <SelectedLayout>
           <Routes>
             <Route path="/" element={<WelcomePage />} />
@@ -34,8 +36,10 @@ const App = () => {
             <Route path="/map" element={<MapPage />} />
             <Route path="/all-reports" element={<AllReportsPage />} />
             <Route path="/my-reports" element={<MyReportsPage />} />
+            <Route path="/admin" element={<TestAdminPage />} />
           </Routes>
         </SelectedLayout>
+
       </div>
     </Router>
   );
