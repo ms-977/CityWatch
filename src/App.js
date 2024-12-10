@@ -12,6 +12,7 @@ import AdminManagementPage from './pages/usermanagment';
 import MapPage from './pages/MapPage';
 import AllReportsPage from './pages/AllReportsPage';
 import MyReportsPage from './pages/MyReportsPage';
+import SettingsPage from './pages/SettingsPage';
 
 // Layouts
 import Layout from './components/layout';
@@ -59,6 +60,7 @@ const App = () => {
             <Route path="all-reports" element={<AllReportsPage />} />
             <Route path="my-reports" element={<MyReportsPage />} />
             <Route path="stats" element={<StatisticsPage />} />
+            <Route path="settings" element={<SettingsPage />} />
 
           </Route>
         </Routes>
