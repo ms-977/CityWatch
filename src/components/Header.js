@@ -1,6 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
+import CreateReportModal from './Modal/CreateReportModal'; // Adjust the path if needed
 
 function Header() {
+  const [isModalOpen, setIsModalOpen] = useState(false); // State to control the modal visibility
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <>
       <style>
@@ -30,7 +41,6 @@ function Header() {
             font-weight: bold;
           }
 
-          /* Hide Create Report on mobile */
           @media (max-width: 768px) {
             .desktop-only {
               display: none !important;
@@ -52,8 +62,13 @@ function Header() {
 
       <header>
         <h1>CITYWATCH</h1>
-        <button className="desktop-only">Create Report</button>
+        <button className="desktop-only" onClick={openModal}>
+          Create Report
+        </button>
       </header>
+
+      {/* Modal Component */}
+      {isModalOpen && <CreateReportModal onClose={closeModal} />}
     </>
   );
 }

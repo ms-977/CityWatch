@@ -48,7 +48,7 @@
   flex: 1;
   font-size: 18px;
   font-weight: 600;
-  color: #555;
+  color: #6941C6;
   text-align: left;
 }
 
@@ -74,7 +74,7 @@
 }
 
 .edit-button:hover {
-  background-color: #1565c0 !important;
+  background-color: #6941C6 !important;
   color: white !important;
 }
 
@@ -87,13 +87,13 @@
 
 .avatar-section .MuiAvatar-root {
   background-color: #f1f1f1;
-  color: #3498db;
+  color: #6941C6;
 }
 
 .divider {
   margin: 30px 0;
   height: 2px;
-  background-color: #e0e0e0;
+  background-color: #6941C6;
   border: none;
 }
 
