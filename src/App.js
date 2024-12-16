@@ -19,7 +19,6 @@ import Layout from './components/layout';
 import MobileLayout from './components/MobileLayout';
 import AdminLayout from './components/AdminLayout';
 import StatisticsPage from './pages/stats';
-import UpdatePasswordPage from './pages/UpdatePasswordPage';
 
 const App = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
@@ -31,7 +30,7 @@ const App = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const isAdmin = localStorage.getItem('isAdmin') === 'true';
+  //const isAdmin = localStorage.getItem('isAdmin') === 'true';
 
   return (
     <Router>
@@ -62,7 +61,6 @@ const App = () => {
             <Route path="my-reports" element={<MyReportsPage />} />
             <Route path="stats" element={<StatisticsPage />} />
             <Route path="settings" element={<SettingsPage />} />
-            <Route path="update-password" element={<UpdatePasswordPage />} />
 
           </Route>
         </Routes>

@@ -5,6 +5,8 @@ import {
   Checkbox,
   FormControlLabel,
   Link,
+  Snackbar,
+  Alert,
 } from '@mui/material';
 import StyledButton from '../components/StyledButton';
 import TextInputBox from '../components/TextInputBox';
@@ -16,18 +18,20 @@ import axios from 'axios';
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' });
   const navigate = useNavigate();
+
+  const handleSnackbar = (message, severity) => {
+    setSnackbar({ open: true, message, severity });
+  };
 
   const handleLogin = async () => {
     try {
       console.log('Logging in with:', { email, password });
-      
+
       const response = await axios.post(
         'http://localhost/Citywatch/CityWatch-Backend/login.php',
-        {
-          email: email,
-          password: password,
-        }
+        { email: email, password: password }
       );
 
       console.log('Backend Response:', response.data);
@@ -38,37 +42,39 @@ const LoginPage = () => {
         // Save details to localStorage
         localStorage.setItem('user_id', user.id);
         localStorage.setItem('username', user.name || 'Guest');
-        localStorage.setItem('usertype', user.usertype); 
+        localStorage.setItem('usertype', user.usertype);
 
-        console.log('User Info Stored:', {
-          id: user.id,
-          name: user.name,
-          usertype: user.usertype,
-        });
+        handleSnackbar('Login successful! Redirecting...', 'success');
 
         // Navigate based on the user type
-        if (user.usertype === 'admin') {
-          console.log('Redirecting to Admin Layout');
-          navigate('/admin/all-reports'); 
-        } else if (user.usertype === 'User') {
-          console.log('Redirecting to User Layout');
-          navigate('/user/map'); 
-        } else {
-          console.error('Invalid user type:', user.usertype);
-          alert('Invalid user type detected.');
-        }
+        setTimeout(() => {
+          if (user.usertype === 'admin') {
+            console.log('Redirecting to Admin Layout');
+            navigate('/admin/all-reports');
+          } else if (user.usertype === 'User') {
+            console.log('Redirecting to User Layout');
+            navigate('/user/map');
+          } else {
+            console.error('Invalid user type:', user.usertype);
+            handleSnackbar('Invalid user type detected.', 'error');
+          }
+        }, 1500); // Delay to let Snackbar display
       } else {
         console.error('Login failed:', response.data.message);
-        alert(response.data.message || 'Login failed. Please try again.');
+        handleSnackbar(response.data.message || 'Login failed. Please try again.', 'error');
       }
     } catch (error) {
       console.error('Error logging in:', error);
-      alert('An error occurred while logging in.');
+      handleSnackbar('An error occurred while logging in. Please try again later.', 'error');
     }
   };
 
   const handleRegister = () => {
     navigate('/register');
+  };
+
+  const handleCloseSnackbar = () => {
+    setSnackbar({ ...snackbar, open: false });
   };
 
   return (
@@ -124,6 +130,18 @@ const LoginPage = () => {
         fullWidth
         className="register-button"
       />
+
+      {/* Snackbar Alert */}
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={4000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert onClose={handleCloseSnackbar} severity={snackbar.severity} sx={{ width: '100%' }}>
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };

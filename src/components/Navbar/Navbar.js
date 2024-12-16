@@ -45,12 +45,16 @@ const Navbar = ({ openCreateReportModal }) => {
   // Close Navbar on Navigation
   const handleNavigate = (path) => {
     setIsNavbarOpen(false); 
-    localStorage.removeItem('user_id');
-  localStorage.removeItem('username');
-  localStorage.removeItem('usertype');
-  localStorage.removeItem('password')
     navigate(path);
   };
+    // Logout Function
+    const handleLogout = () => {
+      // Clear all stored user data
+      localStorage.clear();
+  
+      // Redirect to the login page
+      navigate('/login', { replace: true });
+    };
 
   // Close Navbar when clicking outside
   useEffect(() => {
@@ -166,7 +170,7 @@ const Navbar = ({ openCreateReportModal }) => {
               <ListItemText primary="Settings" />
             </ListItemButton>
 
-            <ListItemButton onClick={() => handleNavigate('/')}>
+            <ListItemButton onClick={() => handleLogout('/logout')}>
               <ListItemIcon sx={iconStyle}>
                 <Logout />
               </ListItemIcon>

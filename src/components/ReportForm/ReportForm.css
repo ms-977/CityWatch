@@ -43,3 +43,19 @@
     width: 100%;
   }
   
+  .address-group {
+    display: flex;
+    align-items: center;
+  }
+  
+  .address-input-wrapper {
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .location-button {
+    color: #1976d2;
+    margin-left: 10px;
+  }
+  

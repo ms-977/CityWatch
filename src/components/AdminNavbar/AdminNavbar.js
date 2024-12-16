@@ -40,7 +40,16 @@ const AdminNavbar = () => {
     setIsNavbarOpen(false); 
     navigate(path);
   };
-
+  const handleLogout = () => {
+    // Clear user-related data
+    localStorage.clear();
+  
+    // Clear history and redirect
+    navigate('/login', { replace: true });
+    window.history.pushState(null, '', '/login');
+    window.location.replace('/login');
+  };
+  
   // Close Navbar when clicking outside
   useEffect(() => {
     const handleOutsideClick = (event) => {
@@ -106,7 +115,7 @@ const AdminNavbar = () => {
               <ListItemText primary="Map" />
             </ListItemButton>
 
-            <ListItemButton onClick={() => handleNavigate('/admin/statistics')}>
+            <ListItemButton onClick={() => handleNavigate('/admin/stats')}>
               <ListItemIcon sx={iconStyle}>
                 <Assessment />
               </ListItemIcon>
@@ -152,7 +161,7 @@ const AdminNavbar = () => {
               <ListItemText primary="Settings" />
             </ListItemButton>
 
-            <ListItemButton onClick={() => handleNavigate('/logout')}>
+            <ListItemButton onClick={() => handleLogout('/logout')}>
               <ListItemIcon sx={iconStyle}>
                 <Logout />
               </ListItemIcon>
