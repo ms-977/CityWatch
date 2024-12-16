@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-
 import Navbar from "../components/Navbar/Navbar";
 import ReportCard from "../components/ReportCard/ReportCard";
 import Pagination from "../components/Pagination/Pagination";
@@ -16,6 +15,7 @@ const AllReportsPage = () => {
   const [selectedReport, setSelectedReport] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [filterStatus, setFilterStatus] = useState("All");
 
   useEffect(() => {
     const fetchReports = async () => {
@@ -40,9 +40,13 @@ const AllReportsPage = () => {
     fetchReports();
   }, []);
 
-  const totalPages = Math.ceil(reports.length / REPORTS_PER_PAGE);
+  const filteredReports = reports.filter((report) =>
+    filterStatus === "All" ? true : report.status === filterStatus
+  );
 
-  const currentReports = reports.slice(
+  const totalPages = Math.ceil(filteredReports.length / REPORTS_PER_PAGE);
+
+  const currentReports = filteredReports.slice(
     (currentPage - 1) * REPORTS_PER_PAGE,
     currentPage * REPORTS_PER_PAGE
   );
@@ -60,6 +64,23 @@ const AllReportsPage = () => {
   return (
     <div className="all-reports-layout">
       <div className="content-wrapper">
+        <div className="filter-container">
+          <label htmlFor="status-filter">Filter by Status: </label>
+          <select
+            id="status-filter"
+            value={filterStatus}
+            onChange={(e) => {
+              setFilterStatus(e.target.value);
+              setCurrentPage(1); // Reset page on filter change
+            }}
+          >
+            <option value="All">All</option>
+            <option value="Closed">Closed</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Reported">Reported</option>
+          </select>
+        </div>
+
         <div className="reports-page">
           {loading ? (
             <p>Loading reports...</p>
@@ -73,17 +94,25 @@ const AllReportsPage = () => {
                 onPageChange={setCurrentPage}
               />
               <div className="reports-container">
-                {currentReports.map((report) => (
-                  <div key={report.id} onClick={() => openModal(report)}>
-                    <ReportCard report={report} />
-                  </div>
-                ))}
+                {currentReports.length > 0 ? (
+                  currentReports.map((report) => (
+                    <div key={report.id} onClick={() => openModal(report)}>
+                      <ReportCard report={report} />
+                    </div>
+                  ))
+                ) : (
+                  <p>No reports found for the selected status.</p>
+                )}
               </div>
             </>
           )}
         </div>
       </div>
-      <Modal showModal={showModal} report={selectedReport} onClose={closeModal} />
+      <Modal
+        showModal={showModal}
+        report={selectedReport}
+        onClose={closeModal}
+      />
     </div>
   );
 };

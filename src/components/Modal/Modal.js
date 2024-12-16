@@ -109,9 +109,9 @@ const Modal = ({ showModal, report, onClose, refreshReports }) => {
                 onChange={(e) => setStatus(e.target.value)}
                 className="form-input"
               >
-                <option value="reported">Reported</option>
-                <option value="inprogress">In Progress</option>
-                <option value="closed">Closed</option>
+                <option value="Reported">Reported</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Closed">Closed</option>
               </select>
               <button
                 onClick={handleStatusChange}

@@ -25,49 +25,46 @@ const LoginPage = () => {
     setSnackbar({ open: true, message, severity });
   };
 
-  const handleLogin = async () => {
-    try {
-      console.log('Logging in with:', { email, password });
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || "http://localhost/Citywatch/CityWatch-Backend";
 
-      const response = await axios.post(
-        'http://localhost/Citywatch/CityWatch-Backend/login.php',
-        { email: email, password: password }
-      );
+const handleLogin = async () => {
+  try {
+    console.log("Attempting login with:", { email, password });
 
-      console.log('Backend Response:', response.data);
+    const response = await axios.post(`${API_BASE_URL}/login.php`, { email, password });
 
-      if (response.data.success && response.data.user) {
-        const user = response.data.user;
+    console.log("Raw Backend Response:", response); // Full response
+    console.log("Response Data:", response.data);   // Parsed response data
 
-        // Save details to localStorage
-        localStorage.setItem('user_id', user.id);
-        localStorage.setItem('username', user.name || 'Guest');
-        localStorage.setItem('usertype', user.usertype);
+    if (response.data.success && response.data.user) {
+      const { id, name, usertype } = response.data.user;
 
-        handleSnackbar('Login successful! Redirecting...', 'success');
+      localStorage.setItem("user_id", id);
+      localStorage.setItem("username", name || "Guest");
+      localStorage.setItem("usertype", usertype);
 
-        // Navigate based on the user type
-        setTimeout(() => {
-          if (user.usertype === 'admin') {
-            console.log('Redirecting to Admin Layout');
-            navigate('/admin/all-reports');
-          } else if (user.usertype === 'User') {
-            console.log('Redirecting to User Layout');
-            navigate('/user/map');
-          } else {
-            console.error('Invalid user type:', user.usertype);
-            handleSnackbar('Invalid user type detected.', 'error');
-          }
-        }, 1500); // Delay to let Snackbar display
-      } else {
-        console.error('Login failed:', response.data.message);
-        handleSnackbar(response.data.message || 'Login failed. Please try again.', 'error');
-      }
-    } catch (error) {
-      console.error('Error logging in:', error);
-      handleSnackbar('An error occurred while logging in. Please try again later.', 'error');
+      handleSnackbar("Login successful! Redirecting...", "success");
+
+      setTimeout(() => {
+        if (usertype === "admin") {
+          navigate("/admin/all-reports");
+        } else if (usertype === "User") {
+          navigate("/user/map");
+        } else {
+          handleSnackbar("Invalid user type detected.", "error");
+        }
+      }, 1500);
+    } else {
+      console.error("Login failed:", response.data.message || "Unexpected response.");
+      handleSnackbar(response.data.message || "Login failed. Please try again.", "error");
     }
-  };
+  } catch (error) {
+    console.error("Error logging in:", error);
+    handleSnackbar("An error occurred while logging in. Please try again later.", "error");
+  }
+};
+
+
 
   const handleRegister = () => {
     navigate('/register');
