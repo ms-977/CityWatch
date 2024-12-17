@@ -9,6 +9,8 @@ import reportedIcon from "../assets/reported.svg";
 import inProgressIcon from "../assets/inprogress.svg";
 import closedIcon from "../assets/closed.svg";
 
+const API_BASE_URL = "https://citywatch-services-5b54bb1f3d47.herokuapp.com/";
+
 const containerStyle = {
   width: "100%",
   height: "100%",
@@ -36,12 +38,11 @@ const GoogleMapsPage = () => {
   const [reports, setReports] = useState([]);
   const [selectedReport, setSelectedReport] = useState(null);
 
-  // Determine the correct icon based on report status
   const getMarkerIcon = (status) => {
     switch (status.toLowerCase()) {
       case "reported":
         return reportedIcon;
-      case "inprogress":
+      case "in progress":
         return inProgressIcon;
       case "closed":
         return closedIcon;
@@ -50,7 +51,6 @@ const GoogleMapsPage = () => {
     }
   };
 
-  // Fetch Current Location or Use Default
   const fetchCurrentLocation = useCallback(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -74,54 +74,35 @@ const GoogleMapsPage = () => {
     }
   }, [mapRef]);
 
-  // Fetch Reports from Backend
-  useEffect(() => {
-    const fetchReports = async () => {
-      try {
-        const response = await fetch(
-          "http://localhost/Citywatch/CityWatch-Backend/reports.php"
-        );
-        const data = await response.json();
-        if (data.success && data.data) {
-          setReports(data.data);
-        } else {
-          console.error("Failed to fetch reports:", data.message);
-        }
-      } catch (error) {
-        console.error("Error fetching reports:", error);
+  const fetchReports = async () => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/reports.php`);
+      const data = await response.json();
+      if (data.success && data.data) {
+        setReports(data.data);
+      } else {
+        console.error("Failed to fetch reports:", data.message);
       }
-    };
+    } catch (error) {
+      console.error("Error fetching reports:", error);
+    }
+  };
 
+  useEffect(() => {
     fetchReports();
   }, []);
 
-  // Trigger location fetch on page load
   useEffect(() => {
     fetchCurrentLocation();
   }, [fetchCurrentLocation]);
 
-  // Smooth Zoom to Marker
   const handleMarkerClick = (report) => {
     setSelectedReport(report);
-
-    if (mapRef) {
-      mapRef.panTo({
-        lat: parseFloat(report.latitude),
-        lng: parseFloat(report.longitude),
-      });
-
-      // Smoothly zoom in on the marker
-      let zoomLevel = mapRef.getZoom();
-
-      const zoomIn = () => {
-        if (zoomLevel < 15) {
-          zoomLevel += 1;
-          mapRef.setZoom(zoomLevel);
-          setTimeout(zoomIn, 100); // Adjust this timeout for smoother/faster zoom
-        }
-      };
-      zoomIn();
-    }
+    mapRef?.panTo({
+      lat: parseFloat(report.latitude),
+      lng: parseFloat(report.longitude),
+    });
+    mapRef?.setZoom(15);
   };
 
   if (!isLoaded) {
@@ -144,9 +125,8 @@ const GoogleMapsPage = () => {
               fullscreenControl: false,
             }}
             onLoad={(map) => setMapRef(map)}
-            onClick={() => setSelectedReport(null)} // Close InfoWindow on map click
+            onClick={() => setSelectedReport(null)}
           >
-            {/* Current User Location Marker */}
             <Marker
               position={currentLocation}
               icon={{
@@ -155,59 +135,61 @@ const GoogleMapsPage = () => {
               }}
             />
 
-            {/* Report Markers */}
             {reports.map((report) => {
               const lat = parseFloat(report.latitude);
               const lng = parseFloat(report.longitude);
-
               if (!isNaN(lat) && !isNaN(lng)) {
                 return (
                   <Marker
-  key={report.id}
-  position={{ lat, lng }}
-  icon={{
-    url: getMarkerIcon(report.status),
-    scaledSize: new window.google.maps.Size(40, 40),
-  }}
-  animation={
-    selectedReport?.id === report.id
-      ? window.google.maps.Animation.BOUNCE
-      : null
-  }
-  onClick={() => handleMarkerClick(report)}
-/>
+                    key={report.id}
+                    position={{ lat, lng }}
+                    icon={{
+                      url: getMarkerIcon(report.status),
+                      scaledSize: new window.google.maps.Size(40, 40),
+                    }}
+                    animation={
+                      selectedReport?.id === report.id
+                        ? window.google.maps.Animation.BOUNCE
+                        : null
+                    }
+                    onClick={() => handleMarkerClick(report)}
+                  />
                 );
               }
               return null;
             })}
 
-            {/* InfoWindow for Report Details */}
             {selectedReport && (
-              <InfoWindow
-              position={{
-                lat: parseFloat(selectedReport.latitude) + 0.002, // Increase offset to lift InfoWindow
-                lng: parseFloat(selectedReport.longitude),
-              }}
-              onCloseClick={() => setSelectedReport(null)}
-            >
-              <div
-                style={{
-                  padding: "10px",
-                  maxWidth: "200px",
-                  textAlign: "left",
-                }}
-              >
-                <h3 style={{ marginBottom: "5px" }}>Report Details</h3>
-                <p><strong>Category:</strong> {selectedReport.category}</p>
-                <p><strong>Description:</strong> {selectedReport.description}</p>
-                <p><strong>Date Reported:</strong> {new Date(selectedReport.date_reported).toLocaleString()}</p>
-                <p><strong>Status:</strong> {selectedReport.status}</p>
-              </div>
-            </InfoWindow>
+             <InfoWindow
+             position={{
+               lat: parseFloat(selectedReport.latitude) + 0.002,
+               lng: parseFloat(selectedReport.longitude),
+             }}
+           >
+             <div 
+               className="info-window" 
+               style={{
+                 padding: "8px",
+                 maxWidth: "300px",
+                 color: "#333",
+                 fontSize: "13px",
+                 fontFamily: "Arial, sans-serif",
+                 lineHeight: "1.4",
+               }}
+             >
+               <h3 style={{ marginBottom: "5px", color: "#4f378a", fontSize: "16px" }}>
+                 Report Details
+               </h3>
+               <p><strong>Category:</strong> {selectedReport.category}</p>
+               <p><strong>Description:</strong> {selectedReport.description}</p>
+               <p><strong>Date Reported:</strong> {new Date(selectedReport.date_reported).toLocaleString()}</p>
+               <p><strong>Status:</strong> {selectedReport.status}</p>
+             </div>
+           </InfoWindow>
+           
             )}
           </GoogleMap>
         </div>
-
         <div className="map-button-container">
           <button
             onClick={fetchCurrentLocation}

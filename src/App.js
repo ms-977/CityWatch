@@ -49,6 +49,8 @@ const App = () => {
             <Route path="my-reports" element={<MyReportsPage />} />
             <Route path="user-info" element={<AdminManagementPage />} />
             <Route path="stats" element={<StatisticsPage />} />
+            <Route path="settings" element={<SettingsPage />} />
+
           </Route>
 
           {/* User Routes */}

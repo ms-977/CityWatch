@@ -14,6 +14,9 @@ import {
   Paper,
 } from "@mui/material";
 
+// Define API Base URL
+const API_BASE_URL = "https://citywatch-services-5b54bb1f3d47.herokuapp.com/";
+
 const AdminManagementPage = () => {
   const [users, setUsers] = useState([]);
   const [newAdmin, setNewAdmin] = useState({
@@ -25,14 +28,9 @@ const AdminManagementPage = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost/Citywatch/CityWatch-Backend/manageusers.php",
-        {
-          params: {
-            action: "fetchUsers",
-          },
-        }
-      );
+      const response = await axios.get(`${API_BASE_URL}/manageusers.php`, {
+        params: { action: "fetchUsers" },
+      });
 
       if (response.data.success) {
         setUsers(response.data.users);
@@ -49,14 +47,11 @@ const AdminManagementPage = () => {
   const handleAddAdmin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        "http://localhost/Citywatch/CityWatch-Backend/manageusers.php",
-        {
-          action: "addUser",
-          ...newAdmin,
-          usertype: "admin",
-        }
-      );
+      const response = await axios.post(`${API_BASE_URL}/manageusers.php`, {
+        action: "addUser",
+        ...newAdmin,
+        usertype: "admin",
+      });
 
       if (response.data.success) {
         alert("New admin added successfully!");
@@ -78,13 +73,10 @@ const AdminManagementPage = () => {
 
   const handleDeleteUser = async (userId) => {
     try {
-      const response = await axios.post(
-        "http://localhost/Citywatch/CityWatch-Backend/manageusers.php",
-        {
-          action: "deleteUser",
-          user_id: userId,
-        }
-      );
+      const response = await axios.post(`${API_BASE_URL}/manageusers.php`, {
+        action: "deleteUser",
+        user_id: userId,
+      });
 
       if (response.data.success) {
         alert("User deleted successfully!");

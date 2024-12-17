@@ -5,6 +5,7 @@ import Pagination from "../components/Pagination/Pagination";
 import Modal from "../components/Modal/Modal";
 import axios from "axios";
 import "./styles/AllReportsPage.css";
+const API_BASE_URL = "https://citywatch-services-5b54bb1f3d47.herokuapp.com/";
 
 const REPORTS_PER_PAGE = 6;
 
@@ -22,7 +23,7 @@ const AllReportsPage = () => {
       try {
         setLoading(true);
         const response = await axios.get(
-          "http://localhost/Citywatch/CityWatch-Backend/reports.php"
+          `${API_BASE_URL}/reports.php`
         );
         if (response.data.success) {
           setReports(response.data.data);

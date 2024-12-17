@@ -25,7 +25,7 @@ const LoginPage = () => {
     setSnackbar({ open: true, message, severity });
   };
 
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || "http://localhost/Citywatch/CityWatch-Backend";
+const API_BASE_URL ="https://citywatch-services-5b54bb1f3d47.herokuapp.com/";
 
 const handleLogin = async () => {
   try {

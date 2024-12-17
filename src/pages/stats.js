@@ -13,6 +13,7 @@ import {
 } from '@mui/material';
 import axios from 'axios';
 import Chart from 'react-apexcharts';
+const API_BASE_URL = "https://citywatch-services-5b54bb1f3d47.herokuapp.com/";
 
 const StatisticsPage = () => {
   const [stats, setStats] = useState(null);
@@ -24,9 +25,8 @@ const StatisticsPage = () => {
     const fetchStatistics = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(
-          'http://localhost/Citywatch/CityWatch-Backend/stats.php',
-          { params: { action: 'getStatistics', filter } }
+        const response = await axios.get(`${API_BASE_URL}/stats.php`, {
+          params: { action: 'getStatistics', filter } }
         );
         if (response.data.success) {
           setStats(response.data.statistics);

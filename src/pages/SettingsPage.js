@@ -8,6 +8,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import SettingsIcon from '@mui/icons-material/Settings';
 import SecurityIcon from '@mui/icons-material/Security';
 import './styles/SettingsPage.css';
+const API_BASE_URL = "https://citywatch-services-5b54bb1f3d47.herokuapp.com/";
 
 const SettingsPage = () => {
   const [userData, setUserData] = useState({
@@ -46,7 +47,7 @@ const SettingsPage = () => {
     const fetchData = async () => {
       try {
         const userId = localStorage.getItem('user_id');
-        const response = await axios.get(`http://localhost/Citywatch/CityWatch-Backend/get_user_data.php?user_id=${userId}`);
+        const response = await axios.get(`${API_BASE_URL}/get_user_data.php?user_id=${userId}`);
         if (response.data.success) {
           setUserData({
             name: response.data.user.name || '',
@@ -68,7 +69,9 @@ const SettingsPage = () => {
   const handleUpdateAccount = async () => {
     try {
       const userId = localStorage.getItem('user_id');
-      const response = await axios.post('http://localhost/Citywatch/CityWatch-Backend/update_user_data.php', {
+      const response = await axios.post(
+        `${API_BASE_URL}/update_user_data.php`,
+        {
         user_id: userId, ...userData
       });
       if (response.data.success) {
@@ -84,7 +87,9 @@ const SettingsPage = () => {
   const handlePasswordVerification = async () => {
     try {
       const userId = localStorage.getItem('user_id');
-      const response = await axios.post('http://localhost/Citywatch/CityWatch-Backend/verify_password.php', {
+      const response = await axios.post(
+        `${API_BASE_URL}/verify_password.php`,
+        {
         user_id: userId,
         currentPassword: passwordData.currentPassword
       });
@@ -103,7 +108,9 @@ const SettingsPage = () => {
   const handlePasswordChange = async () => {
     try {
       const userId = localStorage.getItem('user_id');
-      const response = await axios.post('http://localhost/Citywatch/CityWatch-Backend/change_password.php', {
+      const response = await axios.post(
+        `${API_BASE_URL}/change_password.php`,
+        {
         user_id: userId,
         newPassword: passwordData.newPassword
       });

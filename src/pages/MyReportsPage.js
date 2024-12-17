@@ -4,6 +4,7 @@ import ReportCard from "../components/ReportCard/ReportCard";
 import Pagination from "../components/Pagination/Pagination";
 import Modal from "../components/Modal/Modal";
 import "./styles/MyReportsPage.css";
+const API_BASE_URL = "https://citywatch-services-5b54bb1f3d47.herokuapp.com/";
 
 const REPORTS_PER_PAGE = 6;
 
@@ -26,7 +27,7 @@ const MyReportsPage = () => {
         }
 
         const response = await fetch(
-          `http://localhost/Citywatch/CityWatch-Backend/myreports.php?user_id=${userId}`
+          `${API_BASE_URL}/myreports.php?user_id=${userId}`
         );
 
         const data = await response.json();
