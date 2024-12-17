@@ -5,6 +5,7 @@ import TextInputBox from '../components/TextInputBox';
 import { useNavigate } from 'react-router-dom';
 import logo from '../assets/CityWatch.png';
 import './styles/ForgotPassword.css';
+const API_BASE_URL = "https://citywatch-services-5b54bb1f3d47.herokuapp.com/";
 
 const ForgotPasswordPage = () => {
   const navigate = useNavigate();
@@ -30,14 +31,12 @@ const ForgotPasswordPage = () => {
     }
 
     try {
-      const response = await fetch(
-        'http://localhost/Citywatch/CityWatch-Backend/Forgot-Password.php',
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email }),
-        }
-      );
+      // Update API endpoint to use Heroku base URL
+      const response = await fetch(`${API_BASE_URL}/Forgot-Password.php`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
 
       const result = await response.json();
       if (result.success) {

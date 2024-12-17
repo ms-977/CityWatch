@@ -3,7 +3,7 @@ import "./ReportCard.css";
 
 const ReportCard = ({ report }) => {
   const imageUrl = report.imageurl
-    ? `http://localhost${report.imageurl}` // Use image from the backend
+    ? report.imageurl // Use image from the backend
     : "./assets/noimage.png"; // Default fallback image if no image URL is provided
 
   const severityMap = { 1: "Low", 2: "Medium", 3: "High" };

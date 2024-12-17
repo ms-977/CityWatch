@@ -14,6 +14,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import logo from '../assets/CityWatch.png';
 import './styles/RegisterPage.css';
+const API_BASE_URL = "https://citywatch-services-5b54bb1f3d47.herokuapp.com/";
 
 const RegisterPage = () => {
   const navigate = useNavigate();
@@ -42,7 +43,7 @@ const RegisterPage = () => {
 
     try {
       const response = await axios.post(
-        'http://localhost/Citywatch/CityWatch-Backend/register.php',
+        `${API_BASE_URL}/register.php`,
         {
           name,
           email,

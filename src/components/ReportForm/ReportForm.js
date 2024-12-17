@@ -3,6 +3,7 @@ import { Box, Snackbar, Alert, IconButton } from "@mui/material";
 import MyLocationIcon from "@mui/icons-material/MyLocation"; // Import location icon
 import StyledButton from "../StyledButton";
 import "./ReportForm.css";
+const API_BASE_URL = "https://citywatch-services-5b54bb1f3d47.herokuapp.com/";
 
 const ReportForm = () => {
   const [formData, setFormData] = useState({
@@ -137,15 +138,15 @@ const ReportForm = () => {
     }
 
     try {
-      const response = await fetch(
-        "http://localhost/Citywatch/CityWatch-Backend/CreateReport.php",
-        {
-          method: "POST",
-          body: formDataToSend,
-        }
-      );
-
-      const result = await response.json();
+      const response = await fetch(`${API_BASE_URL}/CreateReport.php`, {
+        method: "POST",
+        body: formDataToSend,
+      });
+    
+      const text = await response.text(); // Inspect raw text response
+      console.log("Raw Response:", text); // Log the response
+      
+      const result = JSON.parse(text); // Try parsing manually
       if (result.success) {
         handleSnackbar("Report submitted successfully!", "success");
       } else {

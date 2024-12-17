@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./Modal.css";
+const API_BASE_URL = "https://citywatch-services-5b54bb1f3d47.herokuapp.com/";
 
 const Modal = ({ showModal, report, onClose, refreshReports }) => {
   const [status, setStatus] = useState(report?.status || ""); 
@@ -15,9 +16,7 @@ const Modal = ({ showModal, report, onClose, refreshReports }) => {
   const checkIfAdmin = async () => {
     try {
       const userId = localStorage.getItem("user_id");
-      const response = await axios.get(
-        "http://localhost/Citywatch/CityWatch-Backend/getusertype.php",
-        {
+      const response = await axios.get(`${API_BASE_URL}getusertype.php`, {
           params: { user_id: userId },
         }
       );
@@ -40,7 +39,7 @@ const Modal = ({ showModal, report, onClose, refreshReports }) => {
   
     try {
       const response = await axios.post(
-        "http://localhost/Citywatch/CityWatch-Backend/updateReportStatus.php",
+        `${API_BASE_URL}updateReportStatus.php`,
         {
           report_id: report.id, 
           status: status,
@@ -134,14 +133,13 @@ const Modal = ({ showModal, report, onClose, refreshReports }) => {
 
         <div className="image-container">
           <img
-            src={`http://localhost${report.imageurl}`}
+            src={report.imageurl}
             alt={report.title || "Report Image"}
             className="report-image"
             onError={(e) => {
               e.target.src = "/assets/image-placeholder.jpg"; 
-              console.error(
-                `Failed to load image: http://localhost${report.imageurl}`
-              );
+              console.error(`Failed to load image from: ${report.imageurl}`);
+
             }}
           />
         </div>

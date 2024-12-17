@@ -5,6 +5,7 @@ import TextInputBox from '../components/TextInputBox';
 import { useNavigate } from 'react-router-dom';
 import logo from '../assets/CityWatch.png';
 import './styles/ForgotPassword.css';
+const API_BASE_URL = "https://citywatch-services-5b54bb1f3d47.herokuapp.com/";
 
 const UpdatePasswordPage = () => {
   const [newPassword, setNewPassword] = useState('');
@@ -30,7 +31,8 @@ const UpdatePasswordPage = () => {
     }
 
     try {
-      const response = await fetch('http://localhost/Citywatch/CityWatch-Backend/resetPassword.php', {
+      const response = await fetch(`${API_BASE_URL}/resetPassword.php`, {
+
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
