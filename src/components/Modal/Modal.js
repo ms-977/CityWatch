@@ -133,14 +133,13 @@ const Modal = ({ showModal, report, onClose, refreshReports }) => {
 
         <div className="image-container">
           <img
-            src={`http://localhost${report.imageurl}`}
+            src={report.imageurl}
             alt={report.title || "Report Image"}
             className="report-image"
             onError={(e) => {
               e.target.src = "/assets/image-placeholder.jpg"; 
-              console.error(
-                `Failed to load image: http://localhost${report.imageurl}`
-              );
+              console.error(`Failed to load image from: ${report.imageurl}`);
+
             }}
           />
         </div>

@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { Box, Snackbar, Alert, IconButton } from "@mui/material";
-import MyLocationIcon from "@mui/icons-material/MyLocation"; 
+import MyLocationIcon from "@mui/icons-material/MyLocation"; // Import location icon
 import StyledButton from "../StyledButton";
 import "./ReportForm.css";
-
-const API_BASE_URL = "https://citywatch-services-5b54bb1f3d47.herokuapp.com";
+const API_BASE_URL = "https://citywatch-services-5b54bb1f3d47.herokuapp.com/";
 
 const ReportForm = () => {
   const [formData, setFormData] = useState({
@@ -15,7 +14,7 @@ const ReportForm = () => {
     address: "",
     latitude: null,
     longitude: null,
-    image: null, 
+    image: null, // Restored the image field
   });
 
   const [snackbar, setSnackbar] = useState({
@@ -107,10 +106,7 @@ const ReportForm = () => {
       }
     } catch (error) {
       console.error("Geocoding Error:", error.message);
-      handleSnackbar(
-        "Unable to find the location. Please enter a valid address.",
-        "error"
-      );
+      handleSnackbar("Unable to find the location. Please enter a valid address.", "error");
       return null;
     }
   };
@@ -138,19 +134,19 @@ const ReportForm = () => {
     formDataToSend.append("phyaddress", formData.address);
 
     if (formData.image) {
-      formDataToSend.append("image", formData.image); 
+      formDataToSend.append("image", formData.image); // Restored image upload
     }
 
     try {
-      const response = await fetch(
-        `${API_BASE_URL}/CreateReport.php`,
-        {
-          method: "POST",
-          body: formDataToSend,
-        }
-      );
-
-      const result = await response.json();
+      const response = await fetch(`${API_BASE_URL}/CreateReport.php`, {
+        method: "POST",
+        body: formDataToSend,
+      });
+    
+      const text = await response.text(); // Inspect raw text response
+      console.log("Raw Response:", text); // Log the response
+      
+      const result = JSON.parse(text); // Try parsing manually
       if (result.success) {
         handleSnackbar("Report submitted successfully!", "success");
       } else {
@@ -228,6 +224,32 @@ const ReportForm = () => {
               <MyLocationIcon />
             </IconButton>
           </div>
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="severity">Severity</label>
+          <select
+            id="severity"
+            name="severity"
+            value={formData.severity}
+            onChange={handleChange}
+            className="form-input"
+          >
+            <option value="">Select severity</option>
+            <option value="Low">Low</option>
+            <option value="Medium">Medium</option>
+            <option value="High">High</option>
+          </select>
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="image">Upload Image</label>
+          <input
+            type="file"
+            id="image"
+            onChange={handleImageUpload}
+            className="form-input"
+          />
         </div>
 
         <StyledButton
